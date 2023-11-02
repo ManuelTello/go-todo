@@ -1,0 +1,9 @@
+TODO:
+    Separete by modules 
+
+
+IDEA:  
+    Add a more robust multiplexer
+        - Read parameters & querys strings
+        - Method based routes
+        * Multi middleware usage
