@@ -24,6 +24,10 @@ type TaskNode struct {
 	NextTask *TaskNode `json:"next"`
 }
 
+type Body struct {
+	Content map[string]string
+}
+
 // Functions
 func CreateNewTask(todo string, username string) Task {
 	var newtask Task = Task{
@@ -58,8 +62,8 @@ func RemoveTaskFromList(current *TaskNode, taskid int) {
 	}
 }
 
-func MapBodyToHashTable(body io.ReadCloser)map[string]string{
-	var bodymap map[string]string = make(map[string]string)
+func MapBody(body io.ReadCloser)Body{
+	var bodymap Body = Body{Content: make(map[string]string)}
 
 	bodyraw,err := io.ReadAll(body)
 
@@ -72,7 +76,7 @@ func MapBodyToHashTable(body io.ReadCloser)map[string]string{
 
 	for i:=0;i<len(bodyparsed);i++ {
 		var kv []string = strings.Split(bodyparsed[i],"=")
-		bodymap[kv[0]] = kv[1]
+		bodymap.Content[kv[0]] = kv[1]
 	}
 
 	return bodymap
@@ -87,12 +91,12 @@ func main() {
 	// ADD TASK
 	mux.HandleFunc("/task/add", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
-			var bodymap map[string]string = MapBodyToHashTable(r.Body)
-			var newtask Task = CreateNewTask(bodymap["todo"],bodymap["username"])
+			var body Body = MapBody(r.Body)
+			var newtask Task = CreateNewTask(body.Content["todo"],body.Content["username"])
 			AddTaskToList(head, newtask)
 			w.WriteHeader(http.StatusOK)
 		w.Write([]byte("New task added."))
-	} else {
+		} else {
 			w.WriteHeader(http.StatusNotFound)
 			w.Write([]byte("404 page not found."))
 		}
@@ -101,8 +105,8 @@ func main() {
 	// DELETE TASK
 	mux.HandleFunc("/task/remove", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "DELETE" {
-			var bodymap map[string]string = MapBodyToHashTable(r.Body)
-			taskid,err := strconv.Atoi(bodymap["id"])
+			var body Body = MapBody(r.Body)
+			taskid,err := strconv.Atoi(body.Content["id"])
 
 			if err != nil {
 				panic(err)

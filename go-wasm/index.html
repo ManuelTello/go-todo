@@ -5,10 +5,12 @@
 		<script src="wasm_exec.js"></script>
 		<script>
 			const go = new Go();
-			WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+			WebAssembly.instantiateStreaming(fetch("play.wasm"), go.importObject).then((result) => {
 				go.run(result.instance);
 			});
 		</script>
 	</head>
-	<body></body>
+	<body>
+		<button onclick="window.Click()">Click me</button>
+	</body>
 </html>
