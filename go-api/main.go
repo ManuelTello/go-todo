@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -134,5 +135,6 @@ func main() {
 		}
 	})
 
+	fmt.Println("Server up at ",port)
 	http.ListenAndServe(port, mux)
 }
