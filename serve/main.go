@@ -5,11 +5,11 @@ import (
 	"net/http"
 )
 
-func main(){
-    fs := http.FileServer(http.Dir("../go-wasm/"))
+func main() {
+	fs := http.FileServer(http.Dir("../wasm/"))
 
-    http.Handle("/",fs)
+	http.Handle("/", fs)
 
-    fmt.Println("Serving at port :3030")
-    http.ListenAndServe(":3030",nil)
+	fmt.Println("Serving at port :3030")
+	http.ListenAndServe(":3030", nil)
 }
