@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../api"
+		}
+	],
+	"settings": {
+		"go.toolsEnvVars": {
+			"GOARCH": "wasm",
+			"GOOS": "js"
+		}
+	}
+}
